@@ -4,9 +4,13 @@ import (
 	"fiber-api/databases"
 	"fiber-api/routes"
 	"log"
+
+	"github.com/joho/godotenv"
 )
 
 func main() {
+	godotenv.Load()
+
 	db := databases.SetupDB()
 	databases.Migrate(db)
 
