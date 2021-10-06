@@ -6,6 +6,7 @@ import (
 	"os"
 
 	"gorm.io/driver/mysql"
+	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 )
 
@@ -22,9 +23,14 @@ func SetupDB() *gorm.DB {
 		password := os.Getenv("DB_PASSWORD")
 
 		dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8&parseTime=True&loc=Local", username, password, host, port, database)
-		db, err = gorm.Open(mysql.Open(dsn), &gorm.Config{})	
+		db, err = gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	}
-	
+
+	if connection == "sqlite" {
+		database := os.Getenv("DB_DATABASE")
+		db, err = gorm.Open(sqlite.Open(database), &gorm.Config{})
+	}
+
 	if err != nil {
 		log.Fatal("Không thể kết nối tới database")
 	}

@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"fiber-api/models"
+	"log"
 	"strconv"
 
 	"github.com/gofiber/fiber/v2"
@@ -23,7 +24,8 @@ func (controller *BookController) Index(c *fiber.Ctx) error {
 
 func (controller *BookController) Store(c *fiber.Ctx) error {
 	var book models.Book
-	c.BodyParser(&book)         // parse request body vào trong model
+	c.BodyParser(&book) // parse request body vào trong model
+	log.Println(book)
 	controller.Db.Create(&book) // Tạo mới record trong database từ model
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{
 		"status":  200,
